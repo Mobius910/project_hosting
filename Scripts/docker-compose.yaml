@@ -1,0 +1,16 @@
+version: '3.9'
+
+networks:
+  ansible-stack: {}
+
+services:
+  app:
+    image: fastapi-ansible-image:latest
+    build:
+      context: /API
+    container_name: fastapi-ansible
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - ansible-stack
