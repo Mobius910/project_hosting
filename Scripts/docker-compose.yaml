@@ -11,6 +11,6 @@ services:
     container_name: fastapi-ansible
     restart: always
     ports:
-      - "8000:8000"
+      - "8080:8080"
     networks:
       - ansible-stack
