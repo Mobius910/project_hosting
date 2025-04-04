@@ -7,7 +7,7 @@ services:
   app:
     image: fastapi-ansible-image:latest
     build:
-      context: /API
+      context: /project_hosting/Scripts/API
     container_name: fastapi-ansible
     restart: always
     ports:
