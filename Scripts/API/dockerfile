@@ -1,6 +1,30 @@
-FROM python:3.9
-WORKDIR /code
-COPY ./requirements.txt /code/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
-COPY main.py /code/app/main.py
-CMD ["fastapi", "run", "app/main.py", "--port", "8000"]
+FROM ubuntu:22.04
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    python3 \
+    python3-pip \
+    ssh \
+    git \
+    curl \
+    && apt-get clean
+
+# Upgrade pip and install Ansible + FastAPI dependencies
+RUN pip3 install --no-cache-dir --upgrade pip \
+    && pip3 install ansible uvicorn fastapi
+
+# Set working directory
+WORKDIR /Scripts/API
+
+# Copy requirements and install
+COPY ./requirements.txt /Scripts/API/requirements.txt
+RUN pip3 install --no-cache-dir --upgrade -r /Scripts/API/requirements.txt
+
+# Copy FastAPI app
+COPY main.py /Scripts/API/main.py
+
+# Expose port for FastAPI
+EXPOSE 8000
+
+# Run FastAPI app
+CMD ["python3", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
