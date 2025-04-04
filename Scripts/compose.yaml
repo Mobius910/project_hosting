@@ -1,0 +1,21 @@
+networks:
+  ansible-stack: {}
+services:
+  fastapi:
+    image: fastapi-image:latest 
+    build:
+      context: /api
+    container_name: fastapi 
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - ansible-stack
+  ansible:
+    image: ansible-image:latest
+    build:
+      context: /ansible
+      dockerfile: ansible-dockerfile.yml
+    restart: always
+    networks:
+      - ansible-stack
