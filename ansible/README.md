@@ -6,8 +6,8 @@ This is the Firewall Fighters Ansible Master Node on our hosting platform.
 
 ```bash
 
-ansible-playbook playbooks/playbook.yml -f inventory/hosts
-
+ansible-playbook -i inventory/hosts playbooks/playbook.yml --ask-pass --ask-become-pass
+```
 ## Structure
 
 my-ansible-project/
