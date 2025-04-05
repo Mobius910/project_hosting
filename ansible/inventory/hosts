@@ -1,0 +1,15 @@
+# Ansible Inventory file by Firewall Fighters
+# use --ask-pass & --ask-become-pass for now
+
+# Kubernetes nodes
+[kube]
+kube01 ansible_host=10.0.10.51 ansible_user=k8s
+
+# All VMs
+[all]
+
+# Group Variables
+[kube:vars]
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3.12
