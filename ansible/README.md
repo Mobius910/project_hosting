@@ -9,7 +9,7 @@ This is the Firewall Fighters Ansible Master Node on our hosting platform.
 ansible-playbook -i inventory/hosts playbooks/playbook.yml --ask-pass --ask-become-pass
 ```
 ## Structure
-
+```bash
 my-ansible-project/
 ├── .gitignore
 ├── README.md
@@ -36,3 +36,4 @@ my-ansible-project/
         ├── templates/
         └── vars/
             └── main.yml
+```
