@@ -1,0 +1,60 @@
+---
+- name: Deploy NGINX in a Kubernetes Pod
+  hosts: kube01
+  become: yes
+  tasks:
+    - name: Check if Python3 Kubernetes installed (to properly use Ansible)
+      apt:
+        name:
+          - python3-pip
+          - python3-kubernetes
+        state: present
+
+    - name: Check if Kubernetes is installed (using Ansible snap module)
+      community.general.snap:
+        name: microk8s
+        classic: yes
+        state: present
+
+    - name: Create a namespace for customer
+      kubernetes.core.k8s:
+        name: klant02
+        api_version: v1
+        kind: Namespace
+        state: present
+        kubeconfig: ~/skill2.2-hosting-project/Setup/Kubernetes/deployment.yaml
+        
+
+    - name: Deploy NGINX as a Kubernetes Pod
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: nginx-pod
+            namespace: klant02  # Change to the namespace you prefer
+          spec:
+            containers:
+              - name: nginx
+                image: nginx:latest
+                ports:
+                  - containerPort: 80
+
+    - name: Expose NGINX Pod via a Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-service
+            namespace: nginx  # Same namespace as the pod
+          spec:
+            selector:
+              app: nginx-pod
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+            type: LoadBalancer
